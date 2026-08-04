@@ -29,4 +29,4 @@ jobs:
                   username: ${{ secrets.AZURE_SSH_USERNAME }}
                   key: ${{ secrets.AZURE_SSH_KEY }}
                   source: "dist/*"
-                  target: "/opt/learnreact"
+                  target: /home/ubuntu/learnreact
