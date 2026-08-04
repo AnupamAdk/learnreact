@@ -1,21 +1,48 @@
-name : updates our code on azure vm
+name: Deploy React App to Azure VM
 
-on: 
+on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   deploy:
-   runs-on: ubuntu-latest
-   steps: 
-    - name: Checkout code
-      uses: actions/checkout@v4
-    
-    - name: copy files via spc 
-      uses: appleboy/scp-action@v0.1.7
-      with: 
-        host: ${{ secrets.AZURE_SSH_HOST }}
-        username: ${{ secrets.AZURE_SSH_USERNAME }}
-        key: ${{ secrets.AZURE_SSH_KEY }}
-        source: "dist/*"
-        target: "/opt/learnreact"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Verify build output
+        run: |
+          echo "Current directory:"
+          pwd
+
+          echo "Project files:"
+          ls -la
+
+          echo "Dist folder:"
+          ls -R dist
+
+      - name: Copy build files to Azure VM
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.AZURE_SSH_HOST }}
+          username: ${{ secrets.AZURE_SSH_USERNAME }}
+          key: ${{ secrets.AZURE_SSH_KEY }}
+          source: "dist/"
+          target: "~/learnreact"
+          overwrite: true
+          debug: true
