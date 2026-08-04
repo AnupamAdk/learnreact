@@ -11,11 +11,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
     
-    - name: copy files via spc 
+    - name: copy files via scp 
       uses: appleboy/scp-action@v0.1.7
       with: 
         host: ${{ secrets.AZURE_SSH_HOST }}
         username: ${{ secrets.AZURE_SSH_USERNAME }}
         key: ${{ secrets.AZURE_SSH_KEY }}
-        source: "."
+        source: "./dist"
         target: "/opt/learnreact"
