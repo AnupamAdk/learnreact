@@ -17,5 +17,5 @@ jobs:
         host: ${{ secrets.AZURE_SSH_HOST }}
         username: ${{ secrets.AZURE_SSH_USERNAME }}
         key: ${{ secrets.AZURE_SSH_KEY }}
-        source: "./dist"
+        source: "dist/*"
         target: "/opt/learnreact"
